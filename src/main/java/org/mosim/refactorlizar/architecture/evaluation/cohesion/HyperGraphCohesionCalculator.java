@@ -56,7 +56,7 @@ public class HyperGraphCohesionCalculator<T> {
         graph.edges().stream()
                 .filter(this::hasEndpointsNotInSameTypes)
                 .collect(Collectors.toSet())
-                .forEach(v -> intraModuleGraph.removeEdge(v.source(), v.target()));
+                .forEach(v -> intraModuleGraph.removeEdge(v.nodeU(), v.nodeV()));
         return intraModuleGraph;
     }
 

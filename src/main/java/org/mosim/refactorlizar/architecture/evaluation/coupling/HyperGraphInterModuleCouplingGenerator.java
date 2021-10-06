@@ -29,7 +29,7 @@ public class HyperGraphInterModuleCouplingGenerator<T> {
         graph.edges().stream()
                 .filter(this::hasEndpointsInSameTypes)
                 .collect(Collectors.toSet())
-                .forEach(v -> interModuleGraph.removeEdge(v.source(), v.target()));
+                .forEach(v -> interModuleGraph.removeEdge(v.nodeU(), v.nodeV()));
         return new Coupling(
                 new HyperGraphComplexityCalculator<T>(mode, systemGraphUtils)
                         .calculate(interModuleGraph)
