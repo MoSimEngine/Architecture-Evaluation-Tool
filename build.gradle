@@ -5,7 +5,10 @@ plugins {
 	id "com.github.johnrengelman.shadow" version "7.1.0"
 	id "net.ltgt.errorprone" version "2.0.2"
 	id "com.diffplug.spotless" version "5.16.0"
+	id "com.vanniktech.maven.publish" version "0.18.0"
+	id "signing"
 }
+
 
 repositories {
 	mavenLocal()
@@ -25,22 +28,14 @@ dependencies {
 	testImplementation "com.google.truth:truth:1.1.2"
 }
 
-group = 'edu.kit.kastel.sdq.case4lang.refactorlizar'
-version = '0.0.1'
+group = 'org.mosim.refactorlizar'
+version = '0.0.2'
 
 distributions {
 	main {
 		distributionBaseName = 'architecture-evaluation-tool'
 		contents {
 			duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-		}
-	}
-}
-
-publishing {
-	publications {
-		maven(MavenPublication) {
-			from(components.java)
 		}
 	}
 }
@@ -56,7 +51,7 @@ java {
 test {
 	useJUnitPlatform()
 }
-description = 'architecture-evaluation'
+description = 'architecture.evaluation'
 
 spotless {
 	java {
@@ -70,5 +65,18 @@ spotless {
 		target "**/*.gradle"
 		// Use the default version and Groovy-Eclipse default configuration
 		greclipse()
+	}
+}
+allprojects {
+	plugins.withId("com.vanniktech.maven.publish") {
+		mavenPublish {
+			sonatypeHost = "S01"
+		}
+	}
+}
+signing {
+	if (project.hasProperty('signing.keyId') && project.hasProperty('signing.secretKeyRingFile')) {
+		sign configurations.archives
+		sign configurations.shadow
 	}
 }
